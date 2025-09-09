@@ -8,7 +8,8 @@ import 'models/agendamento_detalhes.dart';
 class ApiService {
   // ATENÇÃO: Escolha a URL correta para o seu ambiente de teste!
   // Se estiver a usar o Emulador Android:
-  static const String _baseUrl = 'http://localhost:8080';
+  static const String _baseUrl = 'http://10.136.65.139:8080';
+
   // Se estiver a usar o Chrome (Web):
   // static const String _baseUrl = 'http://localhost:5000'; // Lembre-se que fixámos a porta 5000 para web
 
@@ -67,7 +68,6 @@ class ApiService {
       'complemento': complemento,
       'bairro': bairro,
     });
-    print(">>> [FLUTTER ENVIOU] JSON de Registro: $body");
     try {
       final response = await http.post(
         url,
@@ -111,7 +111,7 @@ class ApiService {
         throw Exception('Falha ao carregar os serviços.');
       }
     } catch (e) {
-      throw Exception('Erro de conexão: $e');
+      throw Exception('Erro de conexão000000: $e');
     }
   }
 
@@ -235,7 +235,7 @@ class ApiService {
       );
       return response.statusCode == 201;
     } catch (e) {
-      print('Erro ao criar agendamento: $e');
+      // print('Erro ao criar agendamento: $e');
       return false;
     }
   }

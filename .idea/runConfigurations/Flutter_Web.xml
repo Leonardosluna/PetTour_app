@@ -1,0 +1,6 @@
+<component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="Flutter Web (Porta 5000)" type="FlutterRunConfigurationType" factoryName="Flutter">
+        <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
+        <option name="additionalArgs" value="--web-port=5000" />
+    </configuration>
+</component>

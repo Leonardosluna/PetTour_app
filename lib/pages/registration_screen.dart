@@ -62,9 +62,20 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Crie a sua Conta'),
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.white, // Cor inicial (esquerda)
+                Colors.cyan, // Cor do meio (azul turquesa)
+                Colors.orange, // Cor final (direita)
+              ],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ),
+          ),
+        ),
         centerTitle: true,
-        backgroundColor: Colors.deepPurple,
-        foregroundColor: Colors.white,
       ),
       // --- ESTRUTURA DE RESPONSIVIDADE ADICIONADA ---
       body: Center(
