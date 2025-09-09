@@ -11,6 +11,7 @@ class AuthService {
   static const String _numeroKey = 'user_numero';
   static const String _complementoKey = 'user_complemento';
   static const String _bairroKey = 'user_bairro';
+  static const String _roleKey = 'user_role';
 
   // MÉTODO PARA PEGAR O TOKEN ---
   Future<String?> getToken() async {
@@ -30,6 +31,8 @@ class AuthService {
     await prefs.setString(_numeroKey, data['numero'] ?? '');
     await prefs.setString(_complementoKey, data['complemento'] ?? '');
     await prefs.setString(_bairroKey, data['bairro'] ?? '');
+    await prefs.setString(_roleKey, data['role'] ?? 'ROLE_USER');
+
   }
 
   // Verifica se existe um token salvo
@@ -49,6 +52,7 @@ class AuthService {
       'numero': prefs.getString(_numeroKey),
       'complemento': prefs.getString(_complementoKey),
       'bairro': prefs.getString(_bairroKey),
+      'role': prefs.getString(_roleKey),
     };
   }
 

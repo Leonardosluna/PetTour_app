@@ -111,7 +111,7 @@ class ApiService {
         throw Exception('Falha ao carregar os serviços.');
       }
     } catch (e) {
-      throw Exception('Erro de conexão000000: $e');
+      throw Exception('Erro de conexão: $e');
     }
   }
 
@@ -156,11 +156,11 @@ class ApiService {
 
   // MÉTODO PARA ATUALIZAR UM PET
   Future<Pet?> updatePet(
-    int id,
-    String nome,
-    String raca,
-    String? fotoUrl,
-  ) async {
+      int id,
+      String nome,
+      String raca,
+      String? fotoUrl,
+      ) async {
     final url = Uri.parse('$_baseUrl/perfil/pets/$id');
     try {
       final response = await http.put(
@@ -183,7 +183,7 @@ class ApiService {
     final url = Uri.parse('$_baseUrl/perfil/pets/$id');
     try {
       final response = await http.delete(url, headers: await _getAuthHeaders());
-      return response.statusCode == 204;
+      return response.statusCode == 204; // 204 No Content
     } catch (e) {
       return false;
     }
@@ -233,9 +233,8 @@ class ApiService {
           'observacoes': observacoes ?? '',
         }),
       );
-      return response.statusCode == 201;
+      return response.statusCode == 201; // A API retorna 201 Created em caso de sucesso
     } catch (e) {
-      // print('Erro ao criar agendamento: $e');
       return false;
     }
   }
@@ -266,6 +265,61 @@ class ApiService {
     try {
       final response = await http.patch(url, headers: await _getAuthHeaders());
       return response.statusCode == 200;
+    } catch (e) {
+      return false;
+    }
+  }
+  // --- MÉTODOS PARA GESTÃO DE SERVIÇOS (ADMIN) ---
+
+  Future<Servico?> createServico(String nome, String descricao, double preco, String contato) async {
+    final url = Uri.parse('$_baseUrl/servicos');
+    try {
+      final response = await http.post(
+        url,
+        headers: await _getAuthHeaders(), // Precisa de token de Admin
+        body: jsonEncode({
+          'nome': nome,
+          'descricao': descricao,
+          'preco': preco,
+          'contato': contato,
+        }),
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return Servico.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+      }
+    } catch (e) {
+      print('Erro ao criar serviço: $e');
+    }
+    return null;
+  }
+
+  Future<Servico?> updateServico(int id, String nome, String descricao, double preco, String contato) async {
+    final url = Uri.parse('$_baseUrl/servicos/$id');
+    try {
+      final response = await http.put(
+        url,
+        headers: await _getAuthHeaders(), // Precisa de token de Admin
+        body: jsonEncode({
+          'nome': nome,
+          'descricao': descricao,
+          'preco': preco,
+          'contato': contato,
+        }),
+      );
+      if (response.statusCode == 200) {
+        return Servico.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+      }
+    } catch (e) {
+      print('Erro ao atualizar serviço: $e');
+    }
+    return null;
+  }
+
+  Future<bool> deleteServico(int id) async {
+    final url = Uri.parse('$_baseUrl/servicos/$id');
+    try {
+      final response = await http.delete(url, headers: await _getAuthHeaders());
+      return response.statusCode == 204; // 204 No Content
     } catch (e) {
       return false;
     }

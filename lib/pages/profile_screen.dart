@@ -3,6 +3,7 @@ import '../auth_service.dart';
 import 'edit_profile_screen.dart';
 import 'my_appointments_screen.dart';
 import 'my_pets_screen.dart';
+import 'manage_services_screen.dart'; // <-- IMPORTAÇÃO ADICIONADA
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -19,6 +20,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String _numero = '';
   String _complemento = '';
   String _bairro = '';
+  String _userRole = ''; // variável para guardar o "cargo" do usuário
 
   @override
   void initState() {
@@ -37,6 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _numero = userData['numero'] ?? '';
         _complemento = userData['complemento'] ?? '';
         _bairro = userData['bairro'] ?? '';
+        _userRole = userData['role'] ?? 'ROLE_USER'; // Carrega o "cargo" do usuário
       });
     }
   }
@@ -103,7 +106,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             child: Column(
               crossAxisAlignment:
-                  CrossAxisAlignment.center, // Centraliza os itens principais
+              CrossAxisAlignment.center, // Centraliza os itens principais
               children: [
                 // Avatar (pode ser a foto no futuro)
                 CircleAvatar(
@@ -114,10 +117,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       : null,
                   child: _userPhotoUrl.isEmpty
                       ? const Icon(
-                          Icons.person,
-                          size: 60,
-                          color: Colors.deepPurple,
-                        )
+                    Icons.person,
+                    size: 60,
+                    color: Colors.deepPurple,
+                  )
                       : null,
                 ),
                 const SizedBox(height: 16),
@@ -215,6 +218,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const SizedBox(height: 30),
 
                 // Botões de Ação
+                // --- BOTÃO CONDICIONAL PARA O ADMIN ---
+                if (_userRole == 'ROLE_ADMIN') ...[
+                  ElevatedButton.icon(
+                    icon: const Icon(Icons.settings),
+                    label: const Text('Gerir Serviços'),
+                    onPressed: () {
+                      // navegar para a tela de gestão de serviços
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const ManageServicesScreen()));
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.amber.shade700,
+                      foregroundColor: Colors.white,
+                      minimumSize: const Size(double.infinity, 50),
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                ],
                 ElevatedButton.icon(
                   icon: const Icon(Icons.pets),
                   label: const Text('Meus Pets'),
@@ -232,7 +254,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       50,
                     ), // Faz o botão ocupar a largura toda
                     alignment:
-                        Alignment.centerLeft, // Alinha o conteúdo à esquerda
+                    Alignment.centerLeft, // Alinha o conteúdo à esquerda
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                   ),
                 ),
